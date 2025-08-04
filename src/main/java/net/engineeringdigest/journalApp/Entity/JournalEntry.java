@@ -2,6 +2,7 @@ package net.engineeringdigest.journalApp.Entity;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -15,6 +16,7 @@ public class JournalEntry {
 //this annotation is used to denote the primary key in our collection.
     @Id
     private ObjectId id;
+    @NonNull
     private String title;
     private String content;
 
