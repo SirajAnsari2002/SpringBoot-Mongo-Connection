@@ -60,7 +60,7 @@ public class JournalEntryController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/id/{id}")
+    @PutMapping("/id/{userName}/{id}")
     public ResponseEntity<?> updateJournalById(@PathVariable ObjectId id, @RequestBody JournalEntry newEntry){
         JournalEntry old = journalEntryService.findById(id).orElse(null);
         if(old != null){
