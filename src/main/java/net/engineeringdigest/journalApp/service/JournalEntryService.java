@@ -1,6 +1,7 @@
 package net.engineeringdigest.journalApp.service;
 
 import net.engineeringdigest.journalApp.Entity.JournalEntry;
+import net.engineeringdigest.journalApp.Entity.User;
 import net.engineeringdigest.journalApp.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,13 @@ public class JournalEntryService {
 
     @Autowired
     private JournalEntryRepository journalEntryRepository;
-
-    public void saveEntry(JournalEntry journalEntry){
-
-        journalEntryRepository.save(journalEntry);
+    @Autowired
+    private UserService userService;
+    public void saveEntry(JournalEntry journalEntry, String userName){
+        User user = userService.findByUserName(userName);
+        JournalEntry saved = journalEntryRepository.save(journalEntry);
+        user.getJournalEntries().add(saved);
+        userService.saveEntry(user);
     }
 
     public List<JournalEntry> getAll(){
