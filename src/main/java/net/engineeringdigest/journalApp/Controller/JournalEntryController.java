@@ -1,7 +1,9 @@
 package net.engineeringdigest.journalApp.Controller;
 
 import net.engineeringdigest.journalApp.Entity.JournalEntry;
+import net.engineeringdigest.journalApp.Entity.User;
 import net.engineeringdigest.journalApp.service.JournalEntryService;
+import net.engineeringdigest.journalApp.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,8 @@ public class JournalEntryController {
 
     @Autowired
     private JournalEntryService journalEntryService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<?> createEntry(@RequestBody JournalEntry myEntry){
@@ -30,9 +34,12 @@ public class JournalEntryController {
         }
     }
 
-    @GetMapping()
-    public ResponseEntity<?> getEntries(){
-        List<JournalEntry> all = journalEntryService.getAll();
+    @GetMapping("{userName}")
+    public ResponseEntity<?> getEntries(@PathVariable String userName){
+        //find the user from its given name in path parameter.
+        User user = userService.findByUserName(userName);
+        //here we are accessing the arraylist of the same user which contains the journal entries.
+        List<JournalEntry> all = user.getJournalEntries();
         if(all != null && !all.isEmpty()){
             return new ResponseEntity<>(all, HttpStatus.OK);
         }
