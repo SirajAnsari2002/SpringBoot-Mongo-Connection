@@ -16,14 +16,10 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAllUSers(){
+    public List<User> getAllUsers(){
         return userService.getAll();
     }
 
-    @PostMapping
-    public void createUser(@RequestBody User user){
-        userService.saveEntry(user);
-    }
 
     @PutMapping("/{userName}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String userName){
