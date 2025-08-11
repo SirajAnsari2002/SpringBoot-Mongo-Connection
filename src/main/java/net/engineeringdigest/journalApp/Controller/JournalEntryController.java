@@ -24,9 +24,11 @@ public class JournalEntryController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("{userName}")
-    public ResponseEntity<?> createEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName){
+    @PostMapping()
+    public ResponseEntity<?> createEntry(@RequestBody JournalEntry myEntry){
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
             journalEntryService.saveEntry(myEntry, userName);
             return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
         }catch(Exception e){
