@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,11 +35,11 @@ public class JournalEntryController {
         }
     }
 
-    @GetMapping("{userName}")
-    public ResponseEntity<?> getEntries(@PathVariable String userName){
-        //find the user from its given name in path parameter.
+    @GetMapping
+    public ResponseEntity<?> getAllJournalEntries(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         User user = userService.findByUserName(userName);
-        //here we are accessing the arraylist of the same user which contains the journal entries.
         List<JournalEntry> all = user.getJournalEntries();
         if(all != null && !all.isEmpty()){
             return new ResponseEntity<>(all, HttpStatus.OK);
