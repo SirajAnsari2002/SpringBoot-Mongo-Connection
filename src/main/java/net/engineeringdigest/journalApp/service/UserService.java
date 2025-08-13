@@ -19,31 +19,32 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    public void saveNewUser(User user){
+
+    public void saveNewUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList("USER"));
         userRepository.save(user);
     }
 
-    public void saveUser(User user){
+    public void saveUser(User user) {
 
         userRepository.save(user);
     }
 
-    public List<User> getAll(){
+    public List<User> getAll() {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(ObjectId id){
+    public Optional<User> findById(ObjectId id) {
 
         return userRepository.findById(id);
     }
 
-    public void deleteEntry(ObjectId id){
+    public void deleteEntry(ObjectId id) {
         userRepository.deleteById(id);
     }
 
-    public User findByUserName(String userName){
+    public User findByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
 }
